@@ -3,6 +3,9 @@ A quick hack to do image classification on an OBS stream. Requires OBS Vitual Ca
 
 Train a model using https://lobe.ai/
 Then export that to Tensorflow. In the `detector.py` adjust either the path of the `model_dir` or place the file into the exported model directory and execute it from there.
+Instead of lobe you can use any other tensorflow model too of course. You might not be able to use the convinience wrapper from lobe for that, I have not tested it.
+
+All the code here is doing is communicate from python to a MQTT broker which is picked up by a local web UI loaded into OBS, you can plug anything you want into the backend.
 
 Install Python dependencies:
 ```
