@@ -7,6 +7,9 @@ Instead of lobe you can use any other tensorflow model too of course. You might 
 
 All the code here is doing is communicate from python to a MQTT broker which is picked up by a local web UI loaded into OBS, you can plug anything you want into the backend.
 
+The code was made to detect a bird in a nest (https://twitter.com/timonsku/status/1379523345650233356)
+So all names in the code will refer to that, you may want to change that.
+
 Install Python dependencies:
 ```
 pip3 install git+https://github.com/lobe/lobe-python --no-cache-dir
