@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Bird Detector Output</title>
+</head>
+<script type="text/javascript" src="browserMqtt.js"></script>
+<script type="text/javascript" src="freezeframe.min.js"></script>
+<style type="text/css">
+.ff-container{
+  opacity: 0;
+}
+</style>
+<body>
+<audio id="chirp">
+  <source src="chirp.mp3">
+</audio>
+<img id="animation" class="bird-floop" src="bird-floop.webp">
+</body>
+<script type="text/javascript">
+var audio = document.getElementById("chirp")
+
+var client = mqtt.connect('ws://localhost:9001')
+client.subscribe("birdcam/detections")
+
+
+const ff = new Freezeframe('.bird-floop', {
+    trigger: false,
+    warnings: false
+  });
+
+ff.on("stop", function (items) {
+  console.log(items)
+  items.$container.style.opacity = 0;
+})
+
+ff.on("start", function (items) {
+  console.log(items.$container)
+  items.$container.style.opacity = 100;
+})
+
+predictionArray = ["none","none","none","none","none"]
+
+  client.on("message", function (topic, payload) {
+    console.log([topic, payload].join(": "))
+    var detections = JSON.parse(payload)
+    console.log(wasEmptyNest())
+    if(detections.prediction == "Bird" && wasEmptyNest()){
+      audio.play();
+      ff.start();
+      setTimeout(function(){ff.stop()},2500);
+    }
+    predictionArray.push(detections.prediction);
+    if(predictionArray.length > 10){
+      predictionArray.shift();
+    }
+    
+  })
+  
+  function wasEmptyNest(){
+    let sampleNum = 5;
+    let counter = 0;
+    for (let i = predictionArray.length; i >= predictionArray.length-sampleNum; i--) {
+      if(predictionArray[i] == "none"){
+        counter++;
+        //console.log(counter)
+      }
+    }
+    if(counter == sampleNum){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+  client.on("connect", function (topic, payload) {
+    console.log("mqtt connected")
+  })
+</script>
+</html>
