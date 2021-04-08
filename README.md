@@ -1,5 +1,5 @@
 # obs-image-detect
-A quick hack to do image classification on an OBS stream. Requires OBS Vitual Cam plugin or another way to pipe the video of the stream into python.
+A quick hack to do image classification on an OBS stream and do some audio/video actions based on that. Requires OBS Vitual Cam plugin or another way to pipe the video of the stream into python.
 
 Train a model using https://lobe.ai/
 Then export that to Tensorflow. In the `detector.py` adjust either the path of the `model_dir` or place the file into the exported model directory and execute it from there.
